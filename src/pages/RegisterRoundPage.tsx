@@ -83,7 +83,7 @@ const RegisterRoundPage = () => {
             console.log("REGISTER ROUND");
           }}
         >
-          register
+          REGISTER
         </Button>
       )}
     </>

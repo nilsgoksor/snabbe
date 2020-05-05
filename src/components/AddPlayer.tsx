@@ -88,7 +88,7 @@ const StartPage = ({ players, addToRound, playersInRound }: StartPageProps) => {
               }
             }}
           >
-            add
+            ADD
           </Button>
         </>
       )}
