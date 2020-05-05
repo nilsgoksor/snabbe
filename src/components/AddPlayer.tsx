@@ -1,56 +1,63 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-
+import { Button } from "../styled-components/styled-components";
 type StartPageProps = {
   players: string[];
+  playersInRound: { name: string; points: number }[];
   addToRound: (p: { name: string; points: number }) => void;
 };
 
-const StartPage = ({ players, addToRound }: StartPageProps) => {
+const StartPage = ({ players, addToRound, playersInRound }: StartPageProps) => {
   const [name, setName] = useState<string | null>(null);
-  const [newName, setNewName] = useState<string | null>(null);
+  const [nameExistError, setNameExistError] = useState<string | null>(null);
   const [points, setPoints] = useState<number | null>(null);
-  const [nameExistError, setNameExistError] = useState(false);
 
   useEffect(() => {
-    setPoints(0);
-  }, [name, newName]);
+    const alreadySelected = playersInRound.find((player) => {
+      return player.name === name;
+    });
+    if (alreadySelected) {
+      setNameExistError(name);
+    } else {
+      setNameExistError(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [name]);
 
   return (
     <>
-      <p>select a player from the list</p>
+      <p>select an existing player</p>
       <PlayerListContainer>
-        {players.map((p) => (
-          <PlayerContainer
-            key={p}
-            onClick={() => {
-              setNewName(null);
-              if (p !== name) {
+        {players.map((p: string) => {
+          const alreadySelected = playersInRound.find((player) => {
+            return player.name === p;
+          });
+          return (
+            <PlayerContainer
+              key={p}
+              onClick={() => {
                 setName(p);
-              } else {
-                setName(null);
-              }
-            }}
-            active={p === name}
-          >
-            {p}
-          </PlayerContainer>
-        ))}
-        or add new
+              }}
+              active={p === name}
+              alreadySelected={alreadySelected}
+            >
+              {p}
+            </PlayerContainer>
+          );
+        })}
+        <p>or add new</p>
         <InputPlayerName
           type="text"
-          value={newName || ""}
           placeholder={"player"}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-            setNameExistError(players.includes(e.target.value));
-            setNewName(e.target.value);
-            setName(null);
+            setName(e.target.value);
           }}
         />
       </PlayerListContainer>
-      {(name || newName) && (
+      {nameExistError && <ErrorText>{nameExistError} already exist</ErrorText>}
+      {name && !nameExistError && (
         <>
-          <p>{name || newName}´s points:</p>
+          <p>{name}´s points:</p>
           <InputPlayerPoints
             value={points || ""}
             type="number"
@@ -63,24 +70,28 @@ const StartPage = ({ players, addToRound }: StartPageProps) => {
               const value: number = parseInt(e.target.value);
               if (value >= 0 && value <= 99) {
                 setPoints(value);
+              } else {
+                setPoints(null);
               }
             }}
           />
+          <Button
+            disabled={!points || nameExistError}
+            onClick={() => {
+              const playerName = name;
+              if (points && playerName) {
+                const playerData = { name: playerName, points: points };
+                addToRound(playerData);
+                setName(null);
+                setNameExistError(null);
+                setPoints(null);
+              }
+            }}
+          >
+            add
+          </Button>
         </>
       )}
-      <Button
-        disabled={!points || nameExistError}
-        onClick={() => {
-          const playerName = name || newName;
-          if (points && playerName) {
-            const playerData = { name: playerName, points: points };
-            addToRound(playerData);
-          }
-        }}
-      >
-        add
-      </Button>
-      {nameExistError && <p>{newName} already exist</p>}
     </>
   );
 };
@@ -97,14 +108,15 @@ const PlayerListContainer = styled.div`
 const PlayerContainer = styled.div`
   padding: 10px;
   margin: 10px;
-  background-color: ${(p) => (p.active ? "yellow" : "black")};
+  background-color: ${(p) => (p.active ? "orange" : "black")};
+  background-color: ${(p) => p.alreadySelected && "green"};
   color: ${(p) => (p.active ? "black" : "white")};
 
   :hover {
-    background-color: white;
-    color: black;
+    background-color: ${(p) => !p.disabled && "white"};
+    color: ${(p) => !p.disabled && "black"};
     border: 1px solid black;
-    cursor: pointer;
+    cursor: ${(p) => !p.disabled && "pointer"};
   }
 `;
 
@@ -120,9 +132,6 @@ const InputPlayerPoints = styled.input`
   border: 1px solid black;
 `;
 
-const Button = styled.button`
-  padding: 10px;
-  font-size: 42px;
-  border: 1px solid black;
-  cursor: pointer;
+const ErrorText = styled.p`
+  color: red;
 `;
