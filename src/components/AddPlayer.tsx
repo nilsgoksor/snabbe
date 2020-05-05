@@ -3,17 +3,17 @@ import styled from "styled-components";
 import { Button } from "../styled-components/styled-components";
 type StartPageProps = {
   players: string[];
-  playersInRound: { name: string; points: number }[];
+  roundData: { name: string; points: number }[];
   addToRound: (p: { name: string; points: number }) => void;
 };
 
-const StartPage = ({ players, addToRound, playersInRound }: StartPageProps) => {
+const StartPage = ({ players, addToRound, roundData }: StartPageProps) => {
   const [name, setName] = useState<string | null>(null);
   const [nameExistError, setNameExistError] = useState<string | null>(null);
   const [points, setPoints] = useState<number | null>(null);
 
   useEffect(() => {
-    const alreadySelected = playersInRound.find((player) => {
+    const alreadySelected = roundData.find((player) => {
       return player.name === name;
     });
     if (alreadySelected) {
@@ -29,7 +29,7 @@ const StartPage = ({ players, addToRound, playersInRound }: StartPageProps) => {
       <p>select an existing player</p>
       <PlayerListContainer>
         {players.map((p: string) => {
-          const alreadySelected = playersInRound.find((player) => {
+          const alreadySelected = roundData.find((player) => {
             return player.name === p;
           });
           return (

@@ -12,7 +12,7 @@ import {
 const RegisterRoundPage = () => {
   const players = ["nils", "anton", "adam", "joel", "johannes", "crippe"];
 
-  const [playersInRound, setPlayersInRound] = useState<
+  const [roundData, setRoundData] = useState<
     { name: string; points: number }[]
   >([]);
 
@@ -21,18 +21,18 @@ const RegisterRoundPage = () => {
       <h1>register round</h1>
       <AddPlayer
         players={players}
-        playersInRound={playersInRound}
+        roundData={roundData}
         addToRound={(player: { name: string; points: number }) => {
           if (player) {
-            const insertIndex = playersInRound.findIndex(
+            const insertIndex = roundData.findIndex(
               (p) => p.points < player.points
             );
             if (insertIndex !== -1) {
-              const modifiedPlayersInRound = [...playersInRound];
-              modifiedPlayersInRound.splice(insertIndex, 0, player);
-              setPlayersInRound(modifiedPlayersInRound);
+              const modifiedroundData = [...roundData];
+              modifiedroundData.splice(insertIndex, 0, player);
+              setRoundData(modifiedroundData);
             } else {
-              setPlayersInRound([...playersInRound, player]);
+              setRoundData([...roundData, player]);
             }
             if (!players.includes(player.name)) {
               //TODO: ADD TO DB
@@ -41,7 +41,7 @@ const RegisterRoundPage = () => {
           }
         }}
       />
-      {playersInRound.length > 0 && (
+      {roundData.length > 0 && (
         <Table>
           <TableHead>
             <TableRow>
@@ -51,21 +51,21 @@ const RegisterRoundPage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {playersInRound.map((player, index) => {
+            {roundData.map((player, index) => {
               return (
                 <TableRow
                   key={player.name}
                   onClick={() => {
-                    const removeIndex = playersInRound.findIndex(
+                    const removeIndex = roundData.findIndex(
                       (p) => p.name === player.name
                     );
-                    const modifiedPlayersInRound = [...playersInRound];
+                    const modifiedroundData = [...roundData];
                     if (removeIndex === 0) {
-                      modifiedPlayersInRound.shift();
+                      modifiedroundData.shift();
                     } else {
-                      modifiedPlayersInRound.splice(1, removeIndex);
+                      modifiedroundData.splice(1, removeIndex);
                     }
-                    setPlayersInRound(modifiedPlayersInRound);
+                    setRoundData(modifiedroundData);
                   }}
                 >
                   <TableData>{index + 1}</TableData>
@@ -77,10 +77,10 @@ const RegisterRoundPage = () => {
           </TableBody>
         </Table>
       )}
-      {playersInRound.length > 0 && (
+      {roundData.length > 0 && (
         <Button
           onClick={() => {
-            console.log("REGISTER ROUND");
+            console.log("REGISTER ROUND", roundData);
           }}
         >
           REGISTER
