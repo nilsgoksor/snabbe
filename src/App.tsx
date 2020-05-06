@@ -5,12 +5,13 @@ import RegisterRoundPage from "./pages/RegisterRoundPage";
 import LeaderBoardPage from "./pages/LeaderBoardPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import styled from "styled-components";
+import { MapProvider } from "./state/context";
 
 function App() {
   const history = createBrowserHistory();
 
   return (
-    <>
+    <MapProvider>
       <Header>
         <HeaderLink
           onClick={() => {
@@ -36,7 +37,7 @@ function App() {
           </Switch>
         </Router>
       </PageContainer>
-    </>
+    </MapProvider>
   );
 }
 
@@ -54,15 +55,18 @@ const PageContainer = styled.div`
 const Header = styled.div`
   display: flex;
   justify-content: center;
-  background-color: #a0a0a0;
+  background-color: #f8f8f8;
+  border-bottom: 1px solid black;
 `;
 
 const HeaderLink = styled.div`
   cursor: pointer;
   margin: 20px;
   font-size: 24px;
+  color: ${(p) => p.selected && "white"};
 
   :hover {
-    color: #f5f5f5;
+    color: white;
+    background-color: black;
   }
 `;

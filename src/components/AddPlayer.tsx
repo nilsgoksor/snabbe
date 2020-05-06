@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Button } from "../styled-components/styled-components";
+
 type StartPageProps = {
   players: string[];
   roundData: { name: string; points: number }[];

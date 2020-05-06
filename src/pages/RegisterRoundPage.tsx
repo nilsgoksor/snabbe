@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AddPlayer from "../components/AddPlayer";
 import {
   Table,
@@ -8,13 +8,23 @@ import {
   TableData,
   Button,
 } from "../styled-components/styled-components";
+import { useMapState } from "../state/context";
+import { GET_PLAYERS, ADD_PLAYER } from "../state/actionTypes";
 
 const RegisterRoundPage = () => {
-  const players = ["nils", "anton", "adam", "joel", "johannes", "crippe"];
+  const { mapState, setMapState } = useMapState();
 
   const [roundData, setRoundData] = useState<
     { name: string; points: number }[]
   >([]);
+
+  useEffect(() => {
+    setMapState({
+      type: GET_PLAYERS,
+    });
+  }, [setMapState]);
+
+  const { players } = mapState;
 
   return (
     <>
@@ -35,8 +45,10 @@ const RegisterRoundPage = () => {
               setRoundData([...roundData, player]);
             }
             if (!players.includes(player.name)) {
-              //TODO: ADD TO DB
-              console.log("ADDDING NEW PLAYER");
+              setMapState({
+                type: ADD_PLAYER,
+                player: player.name,
+              });
             }
           }
         }}
