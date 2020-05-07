@@ -1,22 +1,5 @@
 import React, { createContext, useContext, useReducer } from "react";
-import { GET_PLAYERS, ADD_PLAYER } from "./actionTypes";
-
-type MapState = {
-  players: string[];
-};
-
-type MapActions =
-  | {
-      type: "GET_PLAYERS";
-    }
-  | {
-      type: "ADD_PLAYER";
-      player: string;
-    };
-
-const initialState: MapState = {
-  players: [],
-};
+import reducer, { initialState, MapState, MapActions } from "./reducer";
 
 const initialMapContext: {
   mapState: MapState;
@@ -27,25 +10,6 @@ const initialMapContext: {
 };
 
 const MapContext = createContext(initialMapContext);
-
-const reducer = (state: MapState, action: MapActions) => {
-  console.log(action);
-
-  switch (action.type) {
-    case GET_PLAYERS:
-      return {
-        ...state,
-        players: ["nils", "anton"],
-      };
-    case ADD_PLAYER:
-      return {
-        ...state,
-        players: [...state.players, action.player],
-      };
-    default:
-      return state;
-  }
-};
 
 export function MapProvider({ children }: any) {
   const [state, dispatch] = useReducer(reducer, initialState);

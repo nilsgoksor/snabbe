@@ -1,2 +1,1 @@
-export const GET_PLAYERS = "GET_PLAYERS";
-export const ADD_PLAYER = "ADD_PLAYER";
+export const SET_ROUND_DATA = "SET_ROUND_DATA";
