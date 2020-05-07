@@ -52,7 +52,7 @@ const RegisterRoundPage = () => {
             });
 
             if (newPlayer) {
-              db.collection("players").doc().set({
+              db.collection("players").doc(player.name).set({
                 name: player.name,
               });
             }
@@ -64,7 +64,14 @@ const RegisterRoundPage = () => {
           <RoundDataSummary />
           <Button
             onClick={() => {
-              console.log("REGISTER ROUND", roundData);
+              db.collection("rounds").doc(Date.now().toString()).set({
+                round: roundData,
+                date: Date.now(),
+              });
+              setMapState({
+                type: SET_ROUND_DATA,
+                roundData: [],
+              });
             }}
           >
             REGISTER

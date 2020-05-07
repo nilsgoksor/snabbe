@@ -26,8 +26,7 @@ const StartPage = ({ players, addToRound }: StartPageProps) => {
         setNameExistError(null);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name]);
+  }, [name, roundData]);
 
   return (
     <>
