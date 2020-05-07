@@ -24,6 +24,13 @@ const RegisterRoundPage = () => {
       });
   }, [roundData]);
 
+  const currentTime = new Date(Date.now()).toLocaleString([], {
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
   return (
     <>
       <h1>register round</h1>
@@ -61,10 +68,11 @@ const RegisterRoundPage = () => {
       />
       {roundData.length > 0 && (
         <>
+          <h3>{`snabbe on ${currentTime}`}</h3>
           <RoundDataSummary />
           <Button
             onClick={() => {
-              db.collection("rounds").doc(Date.now().toString()).set({
+              db.collection("rounds").doc(currentTime).set({
                 round: roundData,
                 date: Date.now(),
               });

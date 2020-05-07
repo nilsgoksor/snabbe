@@ -70,7 +70,7 @@ const StartPage = ({ players, addToRound }: StartPageProps) => {
           value={newName || ""}
           placeholder={"player"}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-            setNewName(e.target.value.toLocaleLowerCase());
+            setNewName(e.target.value.toUpperCase());
           }}
         />
       </PlayerListContainer>
@@ -79,7 +79,7 @@ const StartPage = ({ players, addToRound }: StartPageProps) => {
       )}
       {name && !nameAlreadyInRound && (
         <>
-          <p>{name}´s points:</p>
+          <h3>{name}´s points:</h3>
           <InputPlayerPoints
             value={points || ""}
             type="number"
