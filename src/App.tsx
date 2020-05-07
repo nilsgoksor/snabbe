@@ -4,6 +4,7 @@ import { createBrowserHistory } from "history";
 import RegisterRoundPage from "./pages/RegisterRoundPage";
 import LeaderBoardPage from "./pages/LeaderBoardPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import Header from "./components/Header";
 import styled from "styled-components";
 import { MapProvider } from "./state/context";
 
@@ -12,23 +13,8 @@ function App() {
 
   return (
     <MapProvider>
-      <Header>
-        <HeaderLink
-          onClick={() => {
-            history.push("/");
-          }}
-        >
-          register round
-        </HeaderLink>
-        <HeaderLink
-          onClick={() => {
-            history.push("/leaderboard");
-          }}
-        >
-          leaderboard
-        </HeaderLink>
-      </Header>
       <PageContainer>
+        <Header history={history} />
         <Router history={history}>
           <Switch>
             <Route path="/" exact component={RegisterRoundPage} />
@@ -49,24 +35,5 @@ const PageContainer = styled.div`
 
   @media (min-width: 750px) {
     width: 750px;
-  }
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: center;
-  background-color: #f8f8f8;
-  border-bottom: 1px solid black;
-`;
-
-const HeaderLink = styled.div`
-  cursor: pointer;
-  margin: 20px;
-  font-size: 24px;
-  color: ${(p) => p.selected && "white"};
-
-  :hover {
-    color: white;
-    background-color: black;
   }
 `;
