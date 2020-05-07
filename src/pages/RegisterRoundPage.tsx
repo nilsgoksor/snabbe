@@ -9,29 +9,35 @@ import {
   Button,
 } from "../styled-components/styled-components";
 import { useMapState } from "../state/context";
-import { GET_PLAYERS, ADD_PLAYER } from "../state/actionTypes";
+import { SET_ROUND_DATA } from "../state/actionTypes";
+import db from "../state/firestore";
 
 const RegisterRoundPage = () => {
   const { mapState, setMapState } = useMapState();
+  const { roundData } = mapState;
 
-  const [roundData, setRoundData] = useState<
-    { name: string; points: number }[]
-  >([]);
+  const [players, setPlayers] = useState<{ name: string }[]>([]);
 
   useEffect(() => {
-    setMapState({
-      type: GET_PLAYERS,
-    });
-  }, [setMapState]);
-
-  const { players } = mapState;
+    db.collection("players")
+      .get()
+      .then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => doc.data());
+        const fetchedPlayers = data.map((player) => {
+          return { name: player.name };
+        });
+        setPlayers(fetchedPlayers);
+      })
+      .catch((error) => {
+        console.error("Error fetching document: ", error);
+      });
+  }, []);
 
   return (
     <>
       <h1>register round</h1>
       <AddPlayer
-        players={players}
-        roundData={roundData}
+        players={players.map((p) => p.name)}
         addToRound={(player: { name: string; points: number }) => {
           if (player) {
             const insertIndex = roundData.findIndex(
@@ -40,15 +46,32 @@ const RegisterRoundPage = () => {
             if (insertIndex !== -1) {
               const modifiedroundData = [...roundData];
               modifiedroundData.splice(insertIndex, 0, player);
-              setRoundData(modifiedroundData);
-            } else {
-              setRoundData([...roundData, player]);
-            }
-            if (!players.includes(player.name)) {
               setMapState({
-                type: ADD_PLAYER,
-                player: player.name,
+                type: SET_ROUND_DATA,
+                roundData: modifiedroundData,
               });
+            } else {
+              setMapState({
+                type: SET_ROUND_DATA,
+                roundData: [...roundData, player],
+              });
+            }
+            const newPlayer = !players.find((p) => {
+              return p.name === player.name;
+            });
+
+            if (newPlayer) {
+              db.collection("players")
+                .doc()
+                .set({
+                  name: player.name,
+                })
+                .then(function () {
+                  console.log("Document successfully written!");
+                })
+                .catch(function (error) {
+                  console.error("Error writing document: ", error);
+                });
             }
           }
         }}
@@ -77,7 +100,10 @@ const RegisterRoundPage = () => {
                     } else {
                       modifiedroundData.splice(1, removeIndex);
                     }
-                    setRoundData(modifiedroundData);
+                    setMapState({
+                      type: SET_ROUND_DATA,
+                      roundData: modifiedroundData,
+                    });
                   }}
                 >
                   <TableData>{index + 1}</TableData>
