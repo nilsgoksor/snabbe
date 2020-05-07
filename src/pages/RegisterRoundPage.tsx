@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AddPlayer from "../components/AddPlayer";
-import {
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableData,
-  Button,
-} from "../styled-components/styled-components";
+import RoundDataSummary from "../components/RoundDataSummary";
+import { Button } from "../styled-components/styled-components";
 import { useMapState } from "../state/context";
 import { SET_ROUND_DATA } from "../state/actionTypes";
 import db from "../state/firestore";
@@ -27,9 +21,6 @@ const RegisterRoundPage = () => {
           return { name: player.name };
         });
         setPlayers(fetchedPlayers);
-      })
-      .catch((error) => {
-        console.error("Error fetching document: ", error);
       });
   }, []);
 
@@ -57,72 +48,28 @@ const RegisterRoundPage = () => {
               });
             }
             const newPlayer = !players.find((p) => {
-              return p.name === player.name;
+              return p.name.toUpperCase() === player.name.toUpperCase();
             });
 
             if (newPlayer) {
-              db.collection("players")
-                .doc()
-                .set({
-                  name: player.name,
-                })
-                .then(function () {
-                  console.log("Document successfully written!");
-                })
-                .catch(function (error) {
-                  console.error("Error writing document: ", error);
-                });
+              db.collection("players").doc().set({
+                name: player.name,
+              });
             }
           }
         }}
       />
       {roundData.length > 0 && (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableData>Rank</TableData>
-              <TableData>Name</TableData>
-              <TableData>Points</TableData>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {roundData.map((player, index) => {
-              return (
-                <TableRow
-                  key={player.name}
-                  onClick={() => {
-                    const removeIndex = roundData.findIndex(
-                      (p) => p.name === player.name
-                    );
-                    const modifiedroundData = [...roundData];
-                    if (removeIndex === 0) {
-                      modifiedroundData.shift();
-                    } else {
-                      modifiedroundData.splice(1, removeIndex);
-                    }
-                    setMapState({
-                      type: SET_ROUND_DATA,
-                      roundData: modifiedroundData,
-                    });
-                  }}
-                >
-                  <TableData>{index + 1}</TableData>
-                  <TableData>{player.name}</TableData>
-                  <TableData>{player.points}</TableData>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      )}
-      {roundData.length > 0 && (
-        <Button
-          onClick={() => {
-            console.log("REGISTER ROUND", roundData);
-          }}
-        >
-          REGISTER
-        </Button>
+        <>
+          <RoundDataSummary />
+          <Button
+            onClick={() => {
+              console.log("REGISTER ROUND", roundData);
+            }}
+          >
+            REGISTER
+          </Button>
+        </>
       )}
     </>
   );

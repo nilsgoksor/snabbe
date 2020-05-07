@@ -16,39 +16,47 @@ const StartPage = ({ players, addToRound }: StartPageProps) => {
   const [points, setPoints] = useState<number | null>(null);
 
   useEffect(() => {
-    const alreadySelected = roundData.find((player) => {
-      return player.name === name;
-    });
-    if (alreadySelected) {
-      setNameExistError(name);
-    } else {
-      setNameExistError(null);
+    if (name) {
+      const alreadySelected = roundData.find((player) => {
+        return player.name.toUpperCase() === name.toUpperCase();
+      });
+      if (alreadySelected) {
+        setNameExistError(name);
+      } else {
+        setNameExistError(null);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name]);
 
   return (
     <>
-      <p>select an existing player</p>
+      {players.length > 0 && (
+        <>
+          <p>select an existing player</p>
+          <PlayerListContainer>
+            {players.map((player: string) => {
+              const alreadySelected = roundData.find((p) => {
+                return p.name === player;
+              });
+              return (
+                <PlayerContainer
+                  key={player}
+                  onClick={() => {
+                    setName(player);
+                  }}
+                  active={player === name}
+                  alreadySelected={alreadySelected}
+                >
+                  {player}
+                </PlayerContainer>
+              );
+            })}
+          </PlayerListContainer>
+        </>
+      )}
       <PlayerListContainer>
-        {players.map((p: string) => {
-          const alreadySelected = roundData.find((player) => {
-            return player.name === p;
-          });
-          return (
-            <PlayerContainer
-              key={p}
-              onClick={() => {
-                setName(p);
-              }}
-              active={p === name}
-              alreadySelected={alreadySelected}
-            >
-              {p}
-            </PlayerContainer>
-          );
-        })}
-        <p>or add new</p>
+        <p>{players.length > 0 && "or"} add new player</p>
         <InputPlayerName
           type="text"
           placeholder={"player"}
@@ -111,6 +119,7 @@ const PlayerListContainer = styled.div`
 const PlayerContainer = styled.div`
   padding: 10px;
   margin: 10px;
+  min-width: 150px;
   background-color: ${(p) => (p.active ? "orange" : "black")};
   background-color: ${(p) => p.alreadySelected && "green"};
   color: ${(p) => (p.active ? "black" : "white")};
