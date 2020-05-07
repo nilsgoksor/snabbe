@@ -12,7 +12,10 @@ const StartPage = ({ players, addToRound }: StartPageProps) => {
   const { mapState } = useMapState();
   const { roundData } = mapState;
   const [name, setName] = useState<string | null>(null);
-  const [nameExistError, setNameExistError] = useState<string | null>(null);
+  const [newName, setNewName] = useState<string | null>(null);
+  const [nameAlreadyInRound, setNameAlreadyInRound] = useState<string | null>(
+    null
+  );
   const [points, setPoints] = useState<number | null>(null);
 
   useEffect(() => {
@@ -21,12 +24,18 @@ const StartPage = ({ players, addToRound }: StartPageProps) => {
         return player.name.toUpperCase() === name.toUpperCase();
       });
       if (alreadySelected) {
-        setNameExistError(name);
+        setNameAlreadyInRound(name);
       } else {
-        setNameExistError(null);
+        setNameAlreadyInRound(null);
       }
     }
   }, [name, roundData]);
+
+  useEffect(() => {
+    if (newName) {
+      setName(newName);
+    }
+  }, [newName]);
 
   return (
     <>
@@ -58,14 +67,17 @@ const StartPage = ({ players, addToRound }: StartPageProps) => {
         <p>{players.length > 0 && "or"} add new player</p>
         <InputPlayerName
           type="text"
+          value={newName || ""}
           placeholder={"player"}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-            setName(e.target.value);
+            setNewName(e.target.value.toLocaleLowerCase());
           }}
         />
       </PlayerListContainer>
-      {nameExistError && <ErrorText>{nameExistError} already exist</ErrorText>}
-      {name && !nameExistError && (
+      {nameAlreadyInRound && (
+        <ErrorText>{nameAlreadyInRound} already exist</ErrorText>
+      )}
+      {name && !nameAlreadyInRound && (
         <>
           <p>{name}´s points:</p>
           <InputPlayerPoints
@@ -86,14 +98,15 @@ const StartPage = ({ players, addToRound }: StartPageProps) => {
             }}
           />
           <Button
-            disabled={!points || nameExistError}
+            disabled={!points || nameAlreadyInRound}
             onClick={() => {
               const playerName = name;
               if (points && playerName) {
                 const playerData = { name: playerName, points: points };
                 addToRound(playerData);
                 setName(null);
-                setNameExistError(null);
+                setNewName(null);
+                setNameAlreadyInRound(null);
                 setPoints(null);
               }
             }}

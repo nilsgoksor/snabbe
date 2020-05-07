@@ -22,7 +22,7 @@ const RegisterRoundPage = () => {
         });
         setPlayers(fetchedPlayers);
       });
-  }, []);
+  }, [roundData]);
 
   return (
     <>
