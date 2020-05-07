@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Button } from "../styled-components/styled-components";
+import { useMapState } from "../state/context";
 
 type StartPageProps = {
   players: string[];
-  roundData: { name: string; points: number }[];
   addToRound: (p: { name: string; points: number }) => void;
 };
 
-const StartPage = ({ players, addToRound, roundData }: StartPageProps) => {
+const StartPage = ({ players, addToRound }: StartPageProps) => {
+  const { mapState } = useMapState();
+  const { roundData } = mapState;
   const [name, setName] = useState<string | null>(null);
   const [nameExistError, setNameExistError] = useState<string | null>(null);
   const [points, setPoints] = useState<number | null>(null);
