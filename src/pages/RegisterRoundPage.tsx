@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import AddPlayer from "../components/AddPlayer";
 import RoundDataSummary from "../components/RoundDataSummary";
 import { Button } from "../styled-components/styled-components";
 import { useMapState } from "../state/context";
-import { SET_ROUND_DATA } from "../state/actionTypes";
+import { SET_PLAYERS, SET_ROUND_DATA } from "../state/actionTypes";
 import db from "../state/firestore";
 import { PLAYERS, ROUNDS } from "../constants/routes";
 
 const RegisterRoundPage = () => {
   const { mapState, setMapState } = useMapState();
-  const { roundData } = mapState;
-
-  const [players, setPlayers] = useState<{ name: string }[]>([]);
+  const { players, roundData } = mapState;
 
   useEffect(() => {
     db.collection(PLAYERS)
@@ -19,13 +17,17 @@ const RegisterRoundPage = () => {
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
         const fetchedPlayers = data.map((player) => {
-          return { name: player.name };
+          return { name: player.name, initialPoints: player.initialPoints };
         });
-        setPlayers(fetchedPlayers);
+        setMapState({
+          type: SET_PLAYERS,
+          players: fetchedPlayers,
+        });
       });
-  }, [roundData]);
+  }, [roundData, setMapState]);
 
   const currentTime = new Date(Date.now());
+
   const formattedCurrentTime = currentTime.toLocaleString([], {
     month: "2-digit",
     day: "2-digit",
@@ -63,6 +65,7 @@ const RegisterRoundPage = () => {
             if (newPlayer) {
               db.collection(PLAYERS).doc(player.name).set({
                 name: player.name,
+                initialPoints: 0,
               });
             }
           }
