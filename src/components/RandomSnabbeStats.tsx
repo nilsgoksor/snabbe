@@ -67,18 +67,4 @@ const RandomSnabbeStats = ({ leaderboardData }) => {
 
 export default RandomSnabbeStats;
 
-const RandomStatContainer = styled.div`
-  animation: pulse 5s infinite;
-
-  @keyframes pulse {
-    0% {
-      opacity: 0;
-    }
-    50% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
-`;
+const RandomStatContainer = styled.div``;
