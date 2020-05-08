@@ -1,3 +1,3 @@
 const devMode = false;
-export const ROUNDS = !devMode ? "ROUNDS" : "MOCK_ROUNDS";
-export const PLAYERS = !devMode ? "PLAYERS" : "MOCK_PLAYERS";
+export const ROUNDS = !devMode ? "rounds" : "mock_rounds";
+export const PLAYERS = !devMode ? "players" : "mock_players";
