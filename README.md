@@ -7,6 +7,7 @@ In the project directory, you can run:
 ### `yarn start`
 
 Runs the app in the development mode.<br />
+Set devMode to true in constants/routes before modifying the database.
 
 ### `yarn build`
 

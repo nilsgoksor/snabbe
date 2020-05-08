@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import db from "../state/firestore";
+import RandomSnabbeStats from "../components/RandomSnabbeStats";
 import {
   Table,
   TableHead,
@@ -15,7 +16,7 @@ const LeaderBoardPage = () => {
   >([]);
 
   const [leaderboard, setLeaderboard] = useState<
-    { name: string; totalPoints: number }[]
+    { name: string; totalPoints: number; roundsPlayed: number }[]
   >([]);
 
   useEffect(() => {
@@ -31,7 +32,11 @@ const LeaderBoardPage = () => {
   }, []);
 
   useEffect(() => {
-    let leaderboard: { name: string; totalPoints: number }[] = [];
+    let leaderboard: {
+      name: string;
+      totalPoints: number;
+      roundsPlayed: number;
+    }[] = [];
     if (fetchedRounds) {
       fetchedRounds.forEach((round) => {
         round.forEach((player) => {
@@ -42,9 +47,14 @@ const LeaderBoardPage = () => {
           if (playerExistIndex !== -1) {
             playerToAdd = leaderboard[playerExistIndex];
             playerToAdd.totalPoints += player.points;
+            playerToAdd.roundsPlayed += 1;
             leaderboard.splice(playerExistIndex, 1);
           } else {
-            playerToAdd = { name: player.name, totalPoints: player.points };
+            playerToAdd = {
+              name: player.name,
+              totalPoints: player.points,
+              roundsPlayed: 1,
+            };
           }
 
           const insertIndex = leaderboard.findIndex(
@@ -86,6 +96,7 @@ const LeaderBoardPage = () => {
               ))}
             </TableBody>
           </Table>
+          <RandomSnabbeStats leaderboardData={leaderboard} />
         </>
       )}
     </>
