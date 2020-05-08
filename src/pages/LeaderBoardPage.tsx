@@ -7,6 +7,7 @@ import {
   TableRow,
   TableData,
 } from "../styled-components/styled-components";
+import { ROUNDS } from "../constants/routes";
 
 const LeaderBoardPage = () => {
   const [fetchedRounds, setFetchedRounds] = useState<
@@ -18,7 +19,7 @@ const LeaderBoardPage = () => {
   >([]);
 
   useEffect(() => {
-    db.collection("rounds")
+    db.collection(ROUNDS)
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());

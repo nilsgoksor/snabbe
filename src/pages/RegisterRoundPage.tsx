@@ -5,6 +5,7 @@ import { Button } from "../styled-components/styled-components";
 import { useMapState } from "../state/context";
 import { SET_ROUND_DATA } from "../state/actionTypes";
 import db from "../state/firestore";
+import { PLAYERS, ROUNDS } from "../constants/routes";
 
 const RegisterRoundPage = () => {
   const { mapState, setMapState } = useMapState();
@@ -13,7 +14,7 @@ const RegisterRoundPage = () => {
   const [players, setPlayers] = useState<{ name: string }[]>([]);
 
   useEffect(() => {
-    db.collection("players")
+    db.collection(PLAYERS)
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
@@ -60,7 +61,7 @@ const RegisterRoundPage = () => {
             });
 
             if (newPlayer) {
-              db.collection("players").doc(player.name).set({
+              db.collection(PLAYERS).doc(player.name).set({
                 name: player.name,
               });
             }
@@ -73,7 +74,7 @@ const RegisterRoundPage = () => {
           <RoundDataSummary />
           <Button
             onClick={() => {
-              db.collection("rounds").doc(currentTime.toString()).set({
+              db.collection(ROUNDS).doc(currentTime.toString()).set({
                 round: roundData,
                 date: Date.now(),
               });
