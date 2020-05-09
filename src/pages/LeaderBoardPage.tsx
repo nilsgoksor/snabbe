@@ -83,6 +83,27 @@ const LeaderBoardPage = () => {
       });
     });
 
+    // TODO: REMOVE: Johannes bug temp fix
+    const johannes = players.find((p) => p.name === "JOHANNES");
+    if (johannes && !leaderboard.find((p) => p.name === "JOHANNES")) {
+      const playerToAdd = {
+        name: johannes.name,
+        totalPoints: 0,
+        initialPoints: johannes.initialPoints,
+        roundsPlayed: 1,
+      };
+
+      const insertIndex = leaderboard.findIndex(
+        (p) =>
+          p.totalPoints + p.initialPoints <
+          playerToAdd.totalPoints + playerToAdd.initialPoints
+      );
+      if (insertIndex !== -1) {
+        leaderboard.splice(insertIndex, 0, playerToAdd);
+      } else {
+        leaderboard.push(playerToAdd);
+      }
+    }
     setLeaderboard(leaderboard);
   }, [fetchedRounds, players]);
 
