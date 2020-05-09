@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Button } from "../styled-components/styled-components";
 import { useMapState } from "../state/context";
@@ -16,7 +16,9 @@ const StartPage = ({ players, addToRound }: StartPageProps) => {
   const [nameAlreadyInRound, setNameAlreadyInRound] = useState<string | null>(
     null
   );
+  const [availablePlayers, setAvailablePlayers] = useState<string[]>(players);
   const [points, setPoints] = useState<number | null>(null);
+  const inputPointsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (name) {
@@ -35,26 +37,38 @@ const StartPage = ({ players, addToRound }: StartPageProps) => {
     if (newName) {
       setName(newName);
     }
-  }, [newName]);
+    if (!newName) {
+      if (inputPointsRef.current) {
+        inputPointsRef.current.focus();
+      }
+    }
+  }, [name, newName]);
+
+  useEffect(() => {
+    const availablePlayers = players.filter((p) => {
+      const alreadySelected = !roundData.find((rp) => rp.name === p);
+      return alreadySelected;
+    });
+    setAvailablePlayers(availablePlayers);
+  }, [players, roundData]);
 
   return (
     <>
-      {players.length > 0 && (
+      {availablePlayers.length > 0 && (
         <>
           <p>Select an existing player</p>
           <PlayerListContainer>
-            {players.map((player: string) => {
-              const alreadySelected = roundData.find((p) => {
-                return p.name === player;
-              });
+            {availablePlayers.map((player: string) => {
               return (
                 <PlayerContainer
                   key={player}
                   onClick={() => {
                     setName(player);
+                    setNewName(null);
+                    if (inputPointsRef.current) {
+                      inputPointsRef.current.focus();
+                    }
                   }}
-                  active={player === name}
-                  alreadySelected={alreadySelected}
                 >
                   {player}
                 </PlayerContainer>
@@ -64,7 +78,7 @@ const StartPage = ({ players, addToRound }: StartPageProps) => {
         </>
       )}
       <PlayerListContainer>
-        <p>{players.length > 0 && "or"} add new player</p>
+        <p>{availablePlayers.length > 0 && "or"} add new player</p>
         <InputPlayerName
           type="text"
           value={newName || ""}
@@ -81,6 +95,7 @@ const StartPage = ({ players, addToRound }: StartPageProps) => {
         <>
           <h3>{name}´s points:</h3>
           <InputPlayerPoints
+            ref={inputPointsRef}
             value={points || ""}
             type="number"
             pattern="/^[0-9.,]+$/"
@@ -131,10 +146,9 @@ const PlayerListContainer = styled.div`
 const PlayerContainer = styled.div`
   padding: 10px;
   margin: 10px;
-  min-width: 150px;
-  background-color: ${(p) => (p.active ? "orange" : "black")};
-  background-color: ${(p) => p.alreadySelected && "green"};
-  color: ${(p) => (p.active ? "black" : "white")};
+  min-width: 100px;
+  background-color: black;
+  color: white;
 
   :hover {
     background-color: ${(p) => !p.disabled && "white"};
