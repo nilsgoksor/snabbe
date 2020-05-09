@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useContext, useReducer, useEffect } from "react";
 import reducer, { initialState, MapState, MapActions } from "./reducer";
 
 const initialMapContext: {
@@ -11,8 +11,19 @@ const initialMapContext: {
 
 const MapContext = createContext(initialMapContext);
 
+const localStorageState = localStorage.getItem("state");
+
+let localState = null;
+if (localStorageState) {
+  localState = JSON.parse(localStorageState);
+}
+
 export function MapProvider({ children }: any) {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, localState || initialState);
+
+  useEffect(() => {
+    localStorage.setItem("state", JSON.stringify(state));
+  }, [state]);
 
   const mapState = state;
   const setMapState = dispatch;
