@@ -41,7 +41,7 @@ const StartPage = ({ players, addToRound }: StartPageProps) => {
     <>
       {players.length > 0 && (
         <>
-          <p>select an existing player</p>
+          <p>Select an existing player</p>
           <PlayerListContainer>
             {players.map((player: string) => {
               const alreadySelected = roundData.find((p) => {

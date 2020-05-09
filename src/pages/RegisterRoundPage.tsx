@@ -37,7 +37,7 @@ const RegisterRoundPage = () => {
 
   return (
     <>
-      <h1>register round</h1>
+      <h1>Register round</h1>
       <AddPlayer
         players={players.map((p) => p.name)}
         addToRound={(player: { name: string; points: number }) => {

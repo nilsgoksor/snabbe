@@ -88,9 +88,9 @@ const LeaderBoardPage = () => {
 
   return (
     <>
-      <h1>leaderboard</h1>
+      <h1>Leaderboard</h1>
       {leaderboard.length <= 0 ? (
-        "leaderboard data not available"
+        "Leaderboard data not available"
       ) : (
         <>
           <Table>

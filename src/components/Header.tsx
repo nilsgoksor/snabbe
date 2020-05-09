@@ -13,7 +13,7 @@ const Header = ({ history }) => {
         }}
         selected={selectedTab === "/"}
       >
-        register round
+        Register round
       </HeaderLink>
       <HeaderLink
         onClick={() => {
@@ -22,7 +22,7 @@ const Header = ({ history }) => {
         }}
         selected={selectedTab === "/leaderboard"}
       >
-        leaderboard
+        Leaderboard
       </HeaderLink>
     </HeaderContainer>
   );
