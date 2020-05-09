@@ -61,6 +61,7 @@ const StartPage = ({ players, addToRound }: StartPageProps) => {
             {availablePlayers.map((player: string) => {
               return (
                 <PlayerContainer
+                  active={player === name}
                   key={player}
                   onClick={() => {
                     setName(player);
@@ -148,7 +149,9 @@ const PlayerContainer = styled.div`
   margin: 10px;
   min-width: 100px;
   background-color: black;
-  color: white;
+  background-color: ${(p) => (p.active ? "white" : "black")};
+  color: ${(p) => (p.active ? "black" : "white")};
+  border: ${(p) => p.active && "1px solid black"};
 
   :hover {
     background-color: ${(p) => !p.disabled && "white"};
