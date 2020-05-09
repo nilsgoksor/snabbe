@@ -71,7 +71,9 @@ const LeaderBoardPage = () => {
         }
 
         const insertIndex = leaderboard.findIndex(
-          (p) => p.totalPoints + p.initialPoints < playerToAdd.totalPoints
+          (p) =>
+            p.totalPoints + p.initialPoints <
+            playerToAdd.totalPoints + playerToAdd.initialPoints
         );
         if (insertIndex !== -1) {
           leaderboard.splice(insertIndex, 0, playerToAdd);
