@@ -97,9 +97,11 @@ const StartPage = ({ players, addToRound }: StartPageProps) => {
           <h3>{name}´s points:</h3>
           <InputPlayerPoints
             ref={inputPointsRef}
+            autoFocus
             value={points || ""}
             type="number"
             pattern="/^[0-9.,]+$/"
+            inputMode="decimal"
             min="0"
             max="99"
             step="1"
@@ -108,8 +110,6 @@ const StartPage = ({ players, addToRound }: StartPageProps) => {
               const value: number = parseInt(e.target.value);
               if (value >= 0 && value <= 99) {
                 setPoints(value);
-              } else {
-                setPoints(null);
               }
             }}
           />
