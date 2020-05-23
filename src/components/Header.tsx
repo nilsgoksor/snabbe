@@ -24,6 +24,16 @@ const Header = ({ history }) => {
       >
         Leaderboard
       </HeaderLink>
+
+      <HeaderLink
+        onClick={() => {
+          setSelectedTab("/profiles");
+          history.push("/profiles");
+        }}
+        selected={selectedTab === "/profiles"}
+      >
+        Player profiles
+      </HeaderLink>
     </HeaderContainer>
   );
 };

@@ -4,6 +4,7 @@ import { createBrowserHistory } from "history";
 import RegisterRoundPage from "./pages/RegisterRoundPage";
 import LeaderBoardPage from "./pages/LeaderBoardPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import PlayerProfilesPage from "./pages/PlayerProfilesPage";
 import Header from "./components/Header";
 import styled from "styled-components";
 import { MapProvider } from "./state/context";
@@ -19,6 +20,7 @@ function App() {
           <Switch>
             <Route path="/" exact component={RegisterRoundPage} />
             <Route path="/leaderboard" exact component={LeaderBoardPage} />
+            <Route path="/profiles" exact component={PlayerProfilesPage} />
             <Route path="*" component={NotFoundPage} />
           </Switch>
         </Router>
