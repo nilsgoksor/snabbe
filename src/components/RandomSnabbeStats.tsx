@@ -32,7 +32,7 @@ const RandomSnabbeStats = ({ leaderboardData }) => {
     )} played the most games (${mostRoundsPlayed})`;
     const bestPpgStat = `${playersWithHigestPpg.map((p) => ` ${p}`)} ${
       playersWithHigestPpg.length > 1 ? "have" : "has"
-    } the highest points per round (${ppg})`;
+    } the highest points per round (${ppg.toFixed(2)})`;
 
     const addMoreStats = "lägg till mer stats dååuue";
     const swishDonate = "DONATE <3: swish 0703360147";
@@ -57,7 +57,7 @@ const RandomSnabbeStats = ({ leaderboardData }) => {
 
   return (
     <>
-      <h3>random stats</h3>
+      <h3>Random stats</h3>
       <RandomStatContainer>
         {randomStats && randomStats[statShownIndex]}
       </RandomStatContainer>

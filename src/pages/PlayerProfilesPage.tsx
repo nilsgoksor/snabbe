@@ -77,11 +77,11 @@ const PlayerProfilesPage = () => {
               <H3>Rounds:</H3>
               {compiledData[selectedPlayer].rounds}
               <H3>Points per round:</H3>
-              {compiledData[selectedPlayer].pointsPerRound}
+              {compiledData[selectedPlayer].pointsPerRound.toFixed(2)}
               <H3>Strengths:</H3>
               {data[selectedPlayer].strengths}
               <H3>Weaknesses:</H3>
-              {data[selectedPlayer].weaknesses}{" "}
+              {data[selectedPlayer].weaknesses}
             </>
           ) : (
             <p>Images missing. Pusha master brir</p>
