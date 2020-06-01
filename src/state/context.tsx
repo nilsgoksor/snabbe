@@ -1,38 +1,39 @@
 import React, { createContext, useContext, useReducer, useEffect } from "react";
-import reducer, { initialState, MapState, MapActions } from "./reducer";
+import reducer, {
+  initialState,
+  ContextState,
+  ContextDispatch,
+} from "./reducer";
 
 const initialMapContext: {
-  mapState: MapState;
-  setMapState: React.Dispatch<MapActions>;
+  state: ContextState;
+  dispatch: React.Dispatch<ContextDispatch>;
 } = {
-  mapState: initialState,
-  setMapState: () => {},
+  state: initialState,
+  dispatch: () => {},
 };
 
-const MapContext = createContext(initialMapContext);
+const StateContext = createContext(initialMapContext);
 
-const localStorageState = localStorage.getItem("state");
+const localStorageState = localStorage.getItem("snabbe-state");
 
 let localState = null;
 if (localStorageState) {
   localState = JSON.parse(localStorageState);
 }
 
-export function MapProvider({ children }: any) {
+export const StateProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer(reducer, localState || initialState);
 
   useEffect(() => {
-    localStorage.setItem("state", JSON.stringify(state));
+    localStorage.setItem("snabbe-state", JSON.stringify(state));
   }, [state]);
 
-  const mapState = state;
-  const setMapState = dispatch;
-
   return (
-    <MapContext.Provider value={{ mapState, setMapState }}>
+    <StateContext.Provider value={{ state, dispatch }}>
       {children}
-    </MapContext.Provider>
+    </StateContext.Provider>
   );
-}
+};
 
-export const useMapState = () => useContext(MapContext);
+export const useContextState = () => useContext(StateContext);

@@ -2,14 +2,14 @@ import React, { useEffect } from "react";
 import AddPlayer from "../components/AddPlayer";
 import RoundDataSummary from "../components/RoundDataSummary";
 import { Button } from "../styled-components/styled-components";
-import { useMapState } from "../state/context";
+import { useContextState } from "../state/context";
 import { SET_PLAYERS, SET_ROUND_DATA } from "../state/actionTypes";
 import db from "../state/firestore";
 import { PLAYERS, ROUNDS } from "../constants/routes";
 
 const RegisterRoundPage = () => {
-  const { mapState, setMapState } = useMapState();
-  const { players, roundData } = mapState;
+  const { state, dispatch } = useContextState();
+  const { players, roundData } = state;
 
   useEffect(() => {
     db.collection(PLAYERS)
@@ -19,12 +19,12 @@ const RegisterRoundPage = () => {
         const fetchedPlayers = data.map((player) => {
           return { name: player.name, initialPoints: player.initialPoints };
         });
-        setMapState({
+        dispatch({
           type: SET_PLAYERS,
           players: fetchedPlayers,
         });
       });
-  }, [roundData, setMapState]);
+  }, [roundData, dispatch]);
 
   const currentTime = new Date(Date.now());
 
@@ -39,7 +39,7 @@ const RegisterRoundPage = () => {
     <>
       <h1>Register round</h1>
       <AddPlayer
-        players={players.map((p) => p.name)}
+        players={players && players.map((p) => p.name)}
         addToRound={(player: { name: string; points: number }) => {
           if (player) {
             const insertIndex = roundData.findIndex(
@@ -48,12 +48,12 @@ const RegisterRoundPage = () => {
             if (insertIndex !== -1) {
               const modifiedroundData = [...roundData];
               modifiedroundData.splice(insertIndex, 0, player);
-              setMapState({
+              dispatch({
                 type: SET_ROUND_DATA,
                 roundData: modifiedroundData,
               });
             } else {
-              setMapState({
+              dispatch({
                 type: SET_ROUND_DATA,
                 roundData: [...roundData, player],
               });
@@ -81,7 +81,7 @@ const RegisterRoundPage = () => {
                 round: roundData,
                 date: Date.now(),
               });
-              setMapState({
+              dispatch({
                 type: SET_ROUND_DATA,
                 roundData: [],
               });

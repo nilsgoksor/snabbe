@@ -6,12 +6,12 @@ import {
   TableRow,
   TableData,
 } from "../styled-components/styled-components";
-import { useMapState } from "../state/context";
+import { useContextState } from "../state/context";
 import { SET_ROUND_DATA } from "../state/actionTypes";
 
 const RoundDataSummary = () => {
-  const { mapState, setMapState } = useMapState();
-  const { roundData } = mapState;
+  const { state, dispatch } = useContextState();
+  const { roundData } = state;
 
   return (
     <Table>
@@ -37,7 +37,7 @@ const RoundDataSummary = () => {
                 } else {
                   modifiedroundData.splice(1, removeIndex);
                 }
-                setMapState({
+                dispatch({
                   type: SET_ROUND_DATA,
                   roundData: modifiedroundData,
                 });

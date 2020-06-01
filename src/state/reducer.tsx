@@ -1,11 +1,11 @@
 import { SET_PLAYERS, SET_ROUND_DATA } from "./actionTypes";
 
-export type MapState = {
+export type ContextState = {
   players: { name: string; initialPoints: number }[];
   roundData: { name: string; points: number }[];
 };
 
-export type MapActions =
+export type ContextDispatch =
   | {
       type: "SET_PLAYERS";
       players: { name: string; initialPoints: number }[];
@@ -15,12 +15,12 @@ export type MapActions =
       roundData: { name: string; points: number }[];
     };
 
-export const initialState: MapState = {
+export const initialState: ContextState = {
   players: [],
   roundData: [],
 };
 
-const reducer = (state: MapState, action: MapActions) => {
+const reducer = (state: ContextState, action: ContextDispatch) => {
   switch (action.type) {
     case SET_PLAYERS:
       return {

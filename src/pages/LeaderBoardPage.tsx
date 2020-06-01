@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import db from "../state/firestore";
 import RandomSnabbeStats from "../components/RandomSnabbeStats";
-import { useMapState } from "../state/context";
+import { useContextState } from "../state/context";
 import {
   Table,
   TableHead,
@@ -12,8 +12,8 @@ import {
 import { ROUNDS } from "../constants/routes";
 
 const LeaderBoardPage = () => {
-  const { mapState } = useMapState();
-  const { players } = mapState;
+  const { state } = useContextState();
+  const { players } = state;
 
   const [fetchedRounds, setFetchedRounds] = useState<
     { name: string; points: number }[][]

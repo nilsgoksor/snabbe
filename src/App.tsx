@@ -7,13 +7,13 @@ import NotFoundPage from "./pages/NotFoundPage";
 import PlayerProfilesPage from "./pages/PlayerProfilesPage";
 import Header from "./components/Header";
 import styled from "styled-components";
-import { MapProvider } from "./state/context";
+import { StateProvider } from "./state/context";
 
 function App() {
   const history = createBrowserHistory();
 
   return (
-    <MapProvider>
+    <StateProvider>
       <Header history={history} />
       <PageContainer>
         <Router history={history}>
@@ -25,7 +25,7 @@ function App() {
           </Switch>
         </Router>
       </PageContainer>
-    </MapProvider>
+    </StateProvider>
   );
 }
 

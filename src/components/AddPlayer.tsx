@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Button } from "../styled-components/styled-components";
-import { useMapState } from "../state/context";
+import { useContextState } from "../state/context";
 
 type StartPageProps = {
   players: string[];
@@ -9,8 +9,8 @@ type StartPageProps = {
 };
 
 const StartPage = ({ players, addToRound }: StartPageProps) => {
-  const { mapState } = useMapState();
-  const { roundData } = mapState;
+  const { state } = useContextState();
+  const { roundData } = state;
   const [name, setName] = useState<string | null>(null);
   const [newName, setNewName] = useState<string | null>(null);
   const [nameAlreadyInRound, setNameAlreadyInRound] = useState<string | null>(
