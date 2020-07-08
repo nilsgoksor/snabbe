@@ -1,56 +1,79 @@
 import styled from "styled-components";
 
+export const Heading1 = styled.h1`
+  font-size: 30px;
+  margin: 0;
+`;
+export const Heading3 = styled.h3`
+  font-size: 25px;
+`;
+
 export const Table = styled.table`
-  margin: auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  width: 75%;
-  text-align: center;
   border-spacing: 0;
-  border: 1px solid black;
-  font-size: 14px;
+  font-size: 25px;
+  max-width: 500px;
+  width: 100%;
+  border: 1px solid ${(p) => p.theme.colors.white};
 `;
 
 export const TableHead = styled.thead`
   font-weight: bold;
-  font-size: 20px;
+  border: 1px solid ${(p) => p.theme.colors.black};
 `;
-export const TableBody = styled.tbody``;
+
+export const TableBody = styled.tbody`
+  border: 1px solid ${(p) => p.theme.colors.white};
+`;
 
 export const TableData = styled.td`
-  padding: 1px;
-  height: 40px;
-  border: 0.9px solid black;
+  text-align: left;
+  border: 1px solid ${(p) => p.theme.colors.white};
+  padding: 5px;
+`;
+
+export const TableDataPoints = styled(TableData)`
+  text-align: center;
+`;
+
+export const Points = styled(TableData)`
+  text-align: right;
 `;
 
 export const TableRow = styled.tr`
-  background-color: white;
-  color: black;
+  border: "1px solid white";
+
   &:hover {
-    color: black;
-    background-color: orange;
+    opacity: 0.2;
+    cursor: pointer;
   }
+`;
+
+export const TableRowHeader = styled.tr`
+  background-color: ${(p) => p.theme.colors.white};
+  color: ${(p) => p.theme.colors.green};
 `;
 
 export const Button = styled.button`
   padding: 10px;
-  font-size: 42px;
-  color: white;
-  background-color: green;
-  box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
-  transform: translateY(-1px);
+  color: ${(p) => p.theme.colors.green};
+  background-color: ${(p) => p.theme.colors.white};
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  border: 0.16em solid ${(p) => p.theme.colors.white};
   text-align: center;
   transition: all 0.15s;
+  outline: none;
 
   :disabled {
-    opacity: 0.5;
+    opacity: ${(p) => p.theme.hover.opacity};
     transform: none;
     box-shadow: none;
   }
 
   :hover {
-    background-color: white;
-    color: green;
+    color: ${(p) => p.theme.colors.white};
+    background-color: ${(p) => p.theme.colors.green};
+    box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+    transform: translateY(-1px);
     cursor: pointer;
   }
 `;
