@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 import db from "../state/firestore";
 import RandomSnabbeStats from "../components/RandomSnabbeStats";
-import { useContextState } from "../state/context";
 import {
   Table,
   TableHead,
   TableBody,
   TableRow,
+  TableRowHeader,
   TableData,
+  TableDataPoints,
+  Heading1,
 } from "../styled-components/styled-components";
-import { ROUNDS } from "../constants/routes";
+import { PLAYERS, ROUNDS } from "../constants/endpoints";
 
 const LeaderBoardPage = () => {
-  const { state } = useContextState();
-  const { players } = state;
-
+  const [players, setPlayers] = useState<
+    { name: string; initialPoints: number }[]
+  >([]);
   const [fetchedRounds, setFetchedRounds] = useState<
     { name: string; points: number }[][]
   >([]);
@@ -29,6 +32,15 @@ const LeaderBoardPage = () => {
   >([]);
 
   useEffect(() => {
+    db.collection(PLAYERS)
+      .get()
+      .then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => doc.data());
+        const fetchedPlayers = data.map((player) => {
+          return { name: player.name, initialPoints: player.initialPoints };
+        });
+        setPlayers(fetchedPlayers);
+      });
     db.collection(ROUNDS)
       .get()
       .then((querySnapshot) => {
@@ -47,98 +59,93 @@ const LeaderBoardPage = () => {
       initialPoints: number;
       roundsPlayed: number;
     }[] = [];
-    fetchedRounds.forEach((round) => {
-      round.forEach((player) => {
-        const playerExistIndex = leaderboard.findIndex(
-          (p) => p.name === player.name
-        );
-        let playerToAdd;
-        if (playerExistIndex !== -1) {
-          playerToAdd = leaderboard[playerExistIndex];
-          playerToAdd.totalPoints += player.points;
-          playerToAdd.roundsPlayed += 1;
-          leaderboard.splice(playerExistIndex, 1);
-        } else {
-          const initialPoints =
-            players.find((p) => p.name === player.name)?.initialPoints || 0;
+    if (players && fetchedRounds) {
+      fetchedRounds.forEach((round) => {
+        round.forEach((player) => {
+          const playerExistIndex = leaderboard.findIndex(
+            (p) => p.name === player.name
+          );
+          let playerToAdd;
+          if (playerExistIndex !== -1) {
+            playerToAdd = leaderboard[playerExistIndex];
+            playerToAdd.totalPoints += player.points;
+            playerToAdd.roundsPlayed += 1;
+            leaderboard.splice(playerExistIndex, 1);
+          } else {
+            const initialPoints =
+              players.find((p) => p.name === player.name)?.initialPoints || 0;
 
-          playerToAdd = {
-            name: player.name,
-            totalPoints: player.points,
-            initialPoints: initialPoints,
-            roundsPlayed: 1,
-          };
-        }
+            playerToAdd = {
+              name: player.name,
+              totalPoints: player.points,
+              initialPoints: initialPoints,
+              roundsPlayed: 1,
+            };
+          }
 
-        const insertIndex = leaderboard.findIndex(
-          (p) =>
-            p.totalPoints + p.initialPoints <
-            playerToAdd.totalPoints + playerToAdd.initialPoints
-        );
-        if (insertIndex !== -1) {
-          leaderboard.splice(insertIndex, 0, playerToAdd);
-        } else {
-          leaderboard.push(playerToAdd);
-        }
+          const insertIndex = leaderboard.findIndex(
+            (p) =>
+              p.totalPoints + p.initialPoints <
+              playerToAdd.totalPoints + playerToAdd.initialPoints
+          );
+          if (insertIndex !== -1) {
+            leaderboard.splice(insertIndex, 0, playerToAdd);
+          } else {
+            leaderboard.push(playerToAdd);
+          }
+        });
       });
-    });
-
-    // TODO: REMOVE: Johannes bug temp fix
-    const johannes = players.find((p) => p.name === "JOHANNES");
-    if (johannes && !leaderboard.find((p) => p.name === "JOHANNES")) {
-      const playerToAdd = {
-        name: johannes.name,
-        totalPoints: 0,
-        initialPoints: johannes.initialPoints,
-        roundsPlayed: 1,
-      };
-
-      const insertIndex = leaderboard.findIndex(
-        (p) =>
-          p.totalPoints + p.initialPoints <
-          playerToAdd.totalPoints + playerToAdd.initialPoints
-      );
-      if (insertIndex !== -1) {
-        leaderboard.splice(insertIndex, 0, playerToAdd);
-      } else {
-        leaderboard.push(playerToAdd);
-      }
     }
     setLeaderboard(leaderboard);
   }, [fetchedRounds, players]);
 
   return (
-    <>
-      <h1>Leaderboard</h1>
+    <LeaderBoardContainer>
+      <Heading1>Leaderboard</Heading1>
       {leaderboard.length <= 0 ? (
         "Leaderboard data not available"
       ) : (
-        <>
+        <TableContainer>
           <Table>
             <TableHead>
-              <TableRow>
-                <TableData>Rank</TableData>
-                <TableData>Name</TableData>
-                <TableData>Points</TableData>
-              </TableRow>
+              <TableRowHeader>
+                <TableDataPoints>#</TableDataPoints>
+                <TableData>Team</TableData>
+                <TableDataPoints>Pts</TableDataPoints>
+              </TableRowHeader>
             </TableHead>
             <TableBody>
               {leaderboard.map((player, index) => (
                 <TableRow key={index}>
-                  <TableData>{index + 1}</TableData>
+                  <TableDataPoints>{index + 1}</TableDataPoints>
                   <TableData>{player.name}</TableData>
-                  <TableData>
+                  <TableDataPoints>
                     {player.totalPoints + player.initialPoints}
-                  </TableData>
+                  </TableDataPoints>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
           <RandomSnabbeStats leaderboardData={leaderboard} />
-        </>
+        </TableContainer>
       )}
-    </>
+    </LeaderBoardContainer>
   );
 };
 
 export default LeaderBoardPage;
+
+const LeaderBoardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+const TableContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0px;
+  width: 100%;
+`;

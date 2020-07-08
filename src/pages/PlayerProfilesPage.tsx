@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import AwesomeSlider from "react-awesome-slider";
 import "react-awesome-slider/dist/styles.css";
 import db from "../state/firestore";
-import { PLAYERS, ROUNDS } from "../constants/routes";
+import { PLAYERS, ROUNDS } from "../constants/endpoints";
 import styled from "styled-components";
 
 const PlayerProfilesPage = () => {

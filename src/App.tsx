@@ -8,23 +8,31 @@ import PlayerProfilesPage from "./pages/PlayerProfilesPage";
 import Header from "./components/Header";
 import styled from "styled-components";
 import { StateProvider } from "./state/context";
+import { ThemeProvider } from "styled-components";
+import theme from "./styled-components/theme";
 
 function App() {
   const history = createBrowserHistory();
 
   return (
     <StateProvider>
-      <Header history={history} />
-      <PageContainer>
-        <Router history={history}>
-          <Switch>
-            <Route path="/" exact component={RegisterRoundPage} />
-            <Route path="/leaderboard" exact component={LeaderBoardPage} />
-            <Route path="/profiles" exact component={PlayerProfilesPage} />
-            <Route path="*" component={NotFoundPage} />
-          </Switch>
-        </Router>
-      </PageContainer>
+      <ThemeProvider theme={theme}>
+        <Header
+          history={history}
+          pages={["round", "leaderboard", "profiles"]}
+        />
+        <PageContainer>
+          <Router history={history}>
+            <Switch>
+              <Route path="/" exact component={RegisterRoundPage} />
+              <Route path="/round" exact component={RegisterRoundPage} />
+              <Route path="/leaderboard" exact component={LeaderBoardPage} />
+              <Route path="/profiles" exact component={PlayerProfilesPage} />
+              <Route path="*" component={NotFoundPage} />
+            </Switch>
+          </Router>
+        </PageContainer>
+      </ThemeProvider>
     </StateProvider>
   );
 }
