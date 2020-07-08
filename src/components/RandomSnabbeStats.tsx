@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { Heading1 } from "../styled-components/styled-components";
+import SpotifyLogo from "../components/SpotifyLogo";
 
 const RandomSnabbeStats = ({ leaderboardData }) => {
   const [randomStats, setRandomStats] = useState<string[] | null>(null);
@@ -50,21 +52,48 @@ const RandomSnabbeStats = ({ leaderboardData }) => {
     if (randomStats && nextIndex === randomStats.length) {
       nextIndex = 0;
     }
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setStatShownIndex(nextIndex);
     }, 5000);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [statShownIndex, randomStats]);
 
   return (
     <>
-      <h3>Random stats</h3>
       <RandomStatContainer>
+        <Heading1>Random stats</Heading1>
         {randomStats && randomStats[statShownIndex]}
       </RandomStatContainer>
+
+      <Heading1>Snabbe playlist</Heading1>
+      <SpotifyContainer
+        onClick={() => {
+          window.open(
+            "https://open.spotify.com/playlist/7csL2GL28K6QQrkoHXOlIK?si=IcX0-lYOT4iy5igYmetlJA",
+            "_blank"
+          );
+        }}
+      >
+        <p>Add songs</p>
+        <SpotifyLogo />
+      </SpotifyContainer>
     </>
   );
 };
 
 export default RandomSnabbeStats;
 
-const RandomStatContainer = styled.div``;
+const RandomStatContainer = styled.div`
+  margin: 30px 0px;
+`;
+
+const SpotifyContainer = styled.div`
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+`;
