@@ -10,6 +10,7 @@ import styled from "styled-components";
 import { StateProvider } from "./state/context";
 import { ThemeProvider } from "styled-components";
 import theme from "./styled-components/theme";
+import HistoryPage from "./pages/HistoryPage";
 
 function App() {
   const history = createBrowserHistory();
@@ -19,7 +20,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <Header
           history={history}
-          pages={["round", "leaderboard", "profiles"]}
+          pages={["round", "leaderboard", "history", "profiles"]}
         />
         <PageContainer>
           <Router history={history}>
@@ -27,6 +28,7 @@ function App() {
               <Route path="/" exact component={RegisterRoundPage} />
               <Route path="/round" exact component={RegisterRoundPage} />
               <Route path="/leaderboard" exact component={LeaderBoardPage} />
+              <Route path="/history" exact component={HistoryPage} />
               <Route path="/profiles" exact component={PlayerProfilesPage} />
               <Route path="*" component={NotFoundPage} />
             </Switch>
