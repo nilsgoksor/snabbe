@@ -15,9 +15,7 @@ import {
 import { PLAYERS, ROUNDS } from "../constants/endpoints";
 
 const LeaderBoardPage = () => {
-  const [players, setPlayers] = useState<
-    { name: string; initialPoints: number }[]
-  >([]);
+  const [players, setPlayers] = useState<{ name: string }[]>([]);
   const [fetchedRounds, setFetchedRounds] = useState<
     { name: string; points: number }[][]
   >([]);
@@ -26,7 +24,6 @@ const LeaderBoardPage = () => {
     {
       name: string;
       totalPoints: number;
-      initialPoints: number;
       roundsPlayed: number;
     }[]
   >([]);
@@ -37,7 +34,7 @@ const LeaderBoardPage = () => {
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
         const fetchedPlayers = data.map((player) => {
-          return { name: player.name, initialPoints: player.initialPoints };
+          return { name: player.name };
         });
         setPlayers(fetchedPlayers);
       });
@@ -56,7 +53,6 @@ const LeaderBoardPage = () => {
     let leaderboard: {
       name: string;
       totalPoints: number;
-      initialPoints: number;
       roundsPlayed: number;
     }[] = [];
     if (players && fetchedRounds) {
@@ -72,21 +68,15 @@ const LeaderBoardPage = () => {
             playerToAdd.roundsPlayed += 1;
             leaderboard.splice(playerExistIndex, 1);
           } else {
-            const initialPoints =
-              players.find((p) => p.name === player.name)?.initialPoints || 0;
-
             playerToAdd = {
               name: player.name,
               totalPoints: player.points,
-              initialPoints: initialPoints,
               roundsPlayed: 1,
             };
           }
 
           const insertIndex = leaderboard.findIndex(
-            (p) =>
-              p.totalPoints + p.initialPoints <
-              playerToAdd.totalPoints + playerToAdd.initialPoints
+            (p) => p.totalPoints < playerToAdd.totalPoints
           );
           if (insertIndex !== -1) {
             leaderboard.splice(insertIndex, 0, playerToAdd);
@@ -119,9 +109,7 @@ const LeaderBoardPage = () => {
                 <TableRow key={index}>
                   <TableDataPoints>{index + 1}</TableDataPoints>
                   <TableData>{player.name}</TableData>
-                  <TableDataPoints>
-                    {player.totalPoints + player.initialPoints}
-                  </TableDataPoints>
+                  <TableDataPoints>{player.totalPoints}</TableDataPoints>
                 </TableRow>
               ))}
             </TableBody>

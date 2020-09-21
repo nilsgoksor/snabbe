@@ -102,7 +102,6 @@ const RegisterRoundPage = () => {
               newName &&
                 db.collection(PLAYERS).doc(newName).set({
                   name: newName,
-                  initialPoints: 0,
                 });
               setAddNewPlayer(false);
               setNewName(null);

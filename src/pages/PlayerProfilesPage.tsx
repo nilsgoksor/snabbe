@@ -8,9 +8,7 @@ import styled from "styled-components";
 const PlayerProfilesPage = () => {
   const [selectedPlayer, setPlayer] = useState("ADAM");
 
-  const [fetchedPlayers, setFetchedPlayers] = useState<
-    { name: any; points: any }[]
-  >([]);
+  const [fetchedPlayers, setFetchedPlayers] = useState<{ name: any }[]>([]);
 
   const [fetchedRounds, setFetchedRounds] = useState<
     { name: string; points: number }[][]
@@ -22,7 +20,7 @@ const PlayerProfilesPage = () => {
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
         const players = data.map((player) => {
-          return { name: player.name, points: player.initialPoints };
+          return { name: player.name };
         });
         setFetchedPlayers(players);
       });
@@ -295,12 +293,6 @@ const PlayerProfilesPage = () => {
       }
     }
 
-    // Add the initial points because the data is fucking broken.
-    for (const initialPlayer of fetchedPlayers) {
-      compiledData[initialPlayer.name].points += initialPlayer.points;
-      compiledData[initialPlayer.name].initialPoints = initialPlayer.points;
-    }
-
     // Create a sorted array containing the players, sorted by points.
     // An calculate the points per round since we're iterating over the compiledData object anyway.
     var sortedPlayers: any[] = [];
@@ -308,8 +300,7 @@ const PlayerProfilesPage = () => {
       sortedPlayers.push([name, compiledData[name].points]);
 
       compiledData[name].pointsPerRound =
-        (compiledData[name].points - compiledData[name].initialPoints) /
-        compiledData[name].rounds;
+        compiledData[name].points / compiledData[name].rounds;
     }
 
     sortedPlayers.sort(function (a, b) {

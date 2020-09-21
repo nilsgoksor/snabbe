@@ -1,14 +1,14 @@
 import { SET_PLAYERS, SET_ROUND_DATA } from "./actionTypes";
 
 export type ContextState = {
-  players: { name: string; initialPoints: number }[];
+  players: { name: string }[];
   roundData: { name: string; points: number }[];
 };
 
 export type ContextDispatch =
   | {
       type: "SET_PLAYERS";
-      players: { name: string; initialPoints: number }[];
+      players: { name: string }[];
     }
   | {
       type: "SET_ROUND_DATA";
