@@ -5,8 +5,10 @@ const theme = {
   colors: {
     white: "#fff",
     black: "#000",
-    green: "#127c54",
-    yellow: "##FBEC49",
+    purple: "#38003c",
+    red: "#e90052",
+    blue: "#04f5ff",
+    green: "#00ff85",
   },
   breakpoints: { small: "600px" },
   hover: { opacity: 0.5 },
