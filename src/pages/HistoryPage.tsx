@@ -10,6 +10,7 @@ import {
   TableData,
   TableDataPoints,
   Heading1,
+  Heading3,
 } from "../styled-components/styled-components";
 import { HISTORY } from "../constants/endpoints";
 
@@ -43,7 +44,7 @@ const HistoryPage = () => {
         <>
           {seasons.map((season) => (
             <TableContainer key={season.name}>
-              <h1>{season.name}</h1>
+              <Heading3>{season.name}</Heading3>
               <Table>
                 <TableHead>
                   <TableRowHeader>
@@ -84,6 +85,5 @@ const TableContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 20px 0px;
   width: 100%;
 `;
