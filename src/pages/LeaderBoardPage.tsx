@@ -91,7 +91,7 @@ const LeaderBoardPage = () => {
 
   return (
     <LeaderBoardContainer>
-      <Heading1>Leaderboard</Heading1>
+      <Heading1>Table</Heading1>
       {leaderboard.length <= 0 ? (
         "Leaderboard data not available"
       ) : (
@@ -134,6 +134,5 @@ const TableContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 20px 0px;
   width: 100%;
 `;

@@ -12,7 +12,7 @@ import FootballPlayerIcon from "../components/FootballPlayerIcon";
 import { PLAYERS, ROUNDS } from "../constants/endpoints";
 
 const RegisterRoundPage = () => {
-  const [players, setPlayers] = useState<string[] | null>(null);
+  const [players, setPlayers] = useState<{ name: string; picture: string }[]>();
   const [playersInRound, setPlayersInRound] = useState<string[]>([]);
   const [roundData, setRoundData] = useState<
     { name: string; points: number }[]
@@ -26,7 +26,7 @@ const RegisterRoundPage = () => {
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
         const fetchedPlayers = data.map((player) => {
-          return player.name;
+          return { name: player.name, picture: player.picture };
         });
         setPlayers(fetchedPlayers);
       });
@@ -58,18 +58,24 @@ const RegisterRoundPage = () => {
 
   return (
     <RegisterRoundPageContainer>
-      <Heading1>Register round</Heading1>
+      <Heading1>Round</Heading1>
       {players && (
         <PlayersContainer>
           {players
-            .filter((p) => !playersInRound.includes(p))
-            .map((player, index) => (
+            .filter((p) => !playersInRound.includes(p.name))
+            .map((player) => (
               <Player
-                key={player + index}
-                onClick={() => setPlayersInRound([player, ...playersInRound])}
+                imageSrc={player.picture}
+                key={player.name}
+                onClick={() =>
+                  setPlayersInRound([player.name, ...playersInRound])
+                }
               >
-                <FootballPlayerIcon />
-                {player}
+                {!player.picture && (
+                  <>
+                    <FootballPlayerIcon /> {player.name}
+                  </>
+                )}
               </Player>
             ))}
           <AddIconContainer
@@ -162,7 +168,7 @@ const PlayersContainer = styled.div`
 
 const AddPlayerContainer = styled.div`
   display: flex;
-  margin-bottom: 20px;
+  margin: 20px 0px;
 `;
 
 const InputPlayerName = styled.input`
@@ -181,11 +187,14 @@ const Player = styled.div`
   margin: 5px;
   padding: 5px;
   background-color: ${(p) => p.theme.colors.white};
-  color: ${(p) => p.theme.colors.green};
+  background-image: ${(p) => p.imageSrc && `url(${p.imageSrc})`};
+  background-size: cover;
+  overflow: hidden;
+  color: ${(p) => p.theme.colors.purple};
   word-break: break-all;
 
   path {
-    fill: ${(p) => p.theme.colors.green};
+    fill: ${(p) => p.theme.colors.purple};
   }
 
   :hover {
@@ -204,14 +213,14 @@ const AddIconContainer = styled.div`
   margin: 5px;
   padding: 5px;
   background-color: ${(p) => p.theme.colors.white};
-  color: ${(p) => p.theme.colors.green};
+  color: ${(p) => p.theme.colors.purple};
   path {
-    fill: ${(p) => p.theme.colors.green};
+    fill: ${(p) => p.theme.colors.purple};
   }
 
   :hover {
     cursor: pointer;
-    background-color: ${(p) => p.theme.colors.green};
+    background-color: ${(p) => p.theme.colors.purple};
     color: ${(p) => p.theme.colors.white};
     path {
       fill: ${(p) => p.theme.colors.white};

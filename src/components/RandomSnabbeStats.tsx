@@ -77,7 +77,7 @@ const RandomSnabbeStats = ({ leaderboardData }) => {
           );
         }}
       >
-        <p>Add songs</p>
+        Add songs
         <SpotifyLogo />
       </SpotifyContainer>
     </>
@@ -86,14 +86,12 @@ const RandomSnabbeStats = ({ leaderboardData }) => {
 
 export default RandomSnabbeStats;
 
-const RandomStatContainer = styled.div`
-  margin: 30px 0px;
-`;
+const RandomStatContainer = styled.div``;
 
 const SpotifyContainer = styled.div`
   cursor: pointer;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  width: 120px;
   align-items: center;
-  height: 30px;
 `;

@@ -5,27 +5,28 @@ import {
   TableBody,
   TableRow,
   TableData,
-  Points,
+  TableRowHeader,
+  TableDataPoints,
 } from "../styled-components/styled-components";
 
 const RoundDataSummary = ({ roundData, removePlayer }) => (
   <Table>
     <TableHead>
-      <TableRow header={true}>
+      <TableRowHeader>
         <TableData>Name</TableData>
-        <Points>Points</Points>
-      </TableRow>
+        <TableDataPoints>Points</TableDataPoints>
+      </TableRowHeader>
     </TableHead>
     <TableBody>
       {roundData.map((player, index) => (
         <TableRow
-          key={player + index}
+          key={player.name}
           onClick={() => {
             removePlayer(player);
           }}
         >
           <TableData>{player.name}</TableData>
-          <Points>{player.points} </Points>
+          <TableDataPoints>{player.points} </TableDataPoints>
         </TableRow>
       ))}
     </TableBody>
