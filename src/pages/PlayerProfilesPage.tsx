@@ -53,16 +53,22 @@ const PlayerProfilesPage = () => {
   }, []);
 
   const playerData = fetchedPlayers.filter((p) => p.name === selectedPlayer)[0];
-  const playerRounds = fetchedRounds.filter((r) =>
-    r.filter((p) => p.name === selectedPlayer)
-  );
-  const totalRounds = playerRounds.length;
-  const totalPoints = playerRounds
-    .map((round) => round[0]?.points)
-    .reduce((prev, next) => prev + next, 0);
-  const ppg = Math.round(totalPoints / totalRounds).toFixed(2);
 
-  console.log("playerData", playerData);
+  const playerRounds: number[] = [];
+  fetchedRounds.forEach((round) => {
+    const playerInRound = round.find((p) => p.name === selectedPlayer);
+    if (playerInRound) {
+      playerRounds.push(playerInRound.points);
+    }
+  });
+
+  const totalRounds = playerRounds.length;
+  const totalPoints = playerRounds.reduce(
+    (totalPoints, pts) => totalPoints + pts,
+    0
+  );
+
+  const ppg = (totalPoints / totalRounds).toFixed(2);
 
   return (
     <>
