@@ -102,7 +102,7 @@ const PlayerProfilesPage = () => {
           <span>{` ${totalRounds}`}</span>
         </Stat>
         <Stat type={1}>
-          <strong>Points per game</strong>
+          <strong>Points per round</strong>
           <span>{` ${ppg}`}</span>
         </Stat>
         {playerData?.strengths?.length > 0 &&

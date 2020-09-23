@@ -31,7 +31,7 @@ const RandomSnabbeStats = ({ leaderboardData }) => {
 
     const mostRoundsPlayedStat = `${playersWithMostRounds.map(
       (p) => ` ${p}`
-    )} played the most games (${mostRoundsPlayed})`;
+    )} played the most rounds (${mostRoundsPlayed})`;
     const bestPpgStat = `${playersWithHigestPpg.map((p) => ` ${p}`)} ${
       playersWithHigestPpg.length > 1 ? "have" : "has"
     } the highest points per round (${ppg.toFixed(2)})`;
