@@ -66,7 +66,10 @@ const RegisterRoundPage = () => {
           {players
             .filter((p) => !playersInRound.includes(p.name))
             .map((player) => {
-              const imgSrc = `${process.env.PUBLIC_URL}/images/${player.name}.png`;
+              const imgSrc = `${
+                process.env.PUBLIC_URL
+              }/images/${player.name.toLowerCase()}.png`;
+
               return (
                 <Player
                   key={player.name}
@@ -100,7 +103,7 @@ const RegisterRoundPage = () => {
             value={newName || ""}
             placeholder={"player"}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              setNewName(e.target.value.toUpperCase());
+              setNewName(e.target.value.toString());
             }}
           />
           <Button

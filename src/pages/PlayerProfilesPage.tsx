@@ -73,7 +73,9 @@ const PlayerProfilesPage = () => {
 
   const ppg = (totalPoints / totalRounds).toFixed(2);
 
-  const playerImage = `${process.env.PUBLIC_URL}/images/${selectedPlayer}.png`;
+  const playerImage = `${
+    process.env.PUBLIC_URL
+  }/images/${selectedPlayer.toLowerCase()}.png`;
 
   return (
     <>
