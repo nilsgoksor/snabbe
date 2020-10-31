@@ -11,6 +11,7 @@ import {
   TableData,
   TableDataPoints,
   Heading1,
+  Heading3,
 } from "../styled-components/styled-components";
 import { PLAYERS, ROUNDS } from "../constants/endpoints";
 
@@ -92,6 +93,7 @@ const LeaderBoardPage = () => {
   return (
     <LeaderBoardContainer>
       <Heading1>Table</Heading1>
+      <Heading3>{`Rounds played: ${fetchedRounds.length} / 50`}</Heading3>
       {leaderboard.length <= 0 ? (
         "Leaderboard data not available"
       ) : (
