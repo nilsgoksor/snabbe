@@ -3,8 +3,13 @@ import "react-awesome-slider/dist/styles.css";
 import db from "../state/firestore";
 import { PLAYERS, ROUNDS } from "../constants/endpoints";
 import styled from "styled-components";
-import { Heading1, Heading3 } from "../styled-components/styled-components";
-import FootballPlayerIcon from "../components/FootballPlayerIcon";
+import {
+  Heading1,
+  Heading3,
+  Player,
+  PlayerImage,
+  PlayerName,
+} from "../styled-components/styled-components";
 
 const PlayerProfilesPage = () => {
   const [selectedPlayer, setSelectedPlayer] = useState("");
@@ -12,7 +17,6 @@ const PlayerProfilesPage = () => {
   const [fetchedPlayers, setFetchedPlayers] = useState<
     {
       name: string;
-      picture: string;
       strengths: [string];
       weaknesses: [string];
     }[]
@@ -30,7 +34,6 @@ const PlayerProfilesPage = () => {
         const players = data.map((player) => {
           return {
             name: player.name,
-            picture: player.picture,
             strengths: player.strengths,
             weaknesses: player.weaknesses,
           };
@@ -70,29 +73,28 @@ const PlayerProfilesPage = () => {
 
   const ppg = (totalPoints / totalRounds).toFixed(2);
 
+  const playerImage = `${process.env.PUBLIC_URL}/images/${selectedPlayer}.png`;
+
   return (
     <>
       <Heading1>Player profiles</Heading1>
-      <Heading3>Select player</Heading3>
       <PlayersContainer>
-        {fetchedPlayers.map((player) => (
-          <Player
-            imageSrc={player.picture}
-            key={player.name}
-            onClick={() => setSelectedPlayer(player.name)}
-            selected={player?.name === selectedPlayer}
-          >
-            {!player.picture && (
-              <>
-                <FootballPlayerIcon /> {player.name}
-              </>
-            )}
-          </Player>
-        ))}
+        {fetchedPlayers.map((player) => {
+          const imgSrc = `${process.env.PUBLIC_URL}/images/${player.name}.png`;
+          return (
+            <Player
+              key={player.name}
+              onClick={() => setSelectedPlayer(player.name)}
+            >
+              <PlayerImage imageSrc={imgSrc} />
+              <PlayerName> {player.name}</PlayerName>
+            </Player>
+          );
+        })}
       </PlayersContainer>
       <Heading3>{selectedPlayer}</Heading3>
       <StatsContainer>
-        {playerData?.picture && <PlayerImage imageSrc={playerData?.picture} />}
+        {playerImage && <PlayerProfileImage imageSrc={playerImage} />}
         <Stat type={1}>
           <strong>Total points</strong>
           <span>{` ${totalPoints}`}</span>
@@ -123,9 +125,10 @@ const PlayerProfilesPage = () => {
 };
 export default PlayerProfilesPage;
 
-const PlayerImage = styled.div`
+const PlayerProfileImage = styled.div`
   width: 100%;
   height: 400px;
+  background-color: ${(p) => p.theme.colors.blue};
   background-image: ${(p) => p.imageSrc && `url(${p.imageSrc})`};
   border: ${(p) => `3px solid ${p.theme.colors.blue}}`};
   background-size: cover;
@@ -136,33 +139,6 @@ const PlayersContainer = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   align-items: flex-start;
-`;
-
-const Player = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 70px;
-  height: 70px;
-  margin: 5px;
-  padding: 5px;
-  background-color: ${(p) => p.theme.colors.white};
-  background-image: ${(p) => p.imageSrc && `url(${p.imageSrc})`};
-  background-size: cover;
-  overflow: hidden;
-  color: ${(p) => p.theme.colors.purple};
-  word-break: break-all;
-  border: ${(p) => p.selected && `3px solid ${p.theme.colors.blue}}`};
-
-  path {
-    fill: ${(p) => p.theme.colors.purple};
-  }
-
-  :hover {
-    cursor: pointer;
-    opacity: ${(p) => p.theme.hover.opacity};
-  }
 `;
 
 const StatsContainer = styled.div`

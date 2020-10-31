@@ -4,15 +4,17 @@ import {
   Button,
   Heading1,
   Heading3,
+  Player,
+  PlayerImage,
+  PlayerName,
 } from "../styled-components/styled-components";
 import db from "../state/firestore";
 import styled from "styled-components";
 import AddIcon from "../components/AddIcon";
-import FootballPlayerIcon from "../components/FootballPlayerIcon";
 import { PLAYERS, ROUNDS } from "../constants/endpoints";
 
 const RegisterRoundPage = () => {
-  const [players, setPlayers] = useState<{ name: string; picture: string }[]>();
+  const [players, setPlayers] = useState<{ name: string }[]>();
   const [playersInRound, setPlayersInRound] = useState<string[]>([]);
   const [roundData, setRoundData] = useState<
     { name: string; points: number }[]
@@ -26,7 +28,7 @@ const RegisterRoundPage = () => {
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
         const fetchedPlayers = data.map((player) => {
-          return { name: player.name, picture: player.picture };
+          return { name: player.name };
         });
         setPlayers(fetchedPlayers);
       });
@@ -63,21 +65,20 @@ const RegisterRoundPage = () => {
         <PlayersContainer>
           {players
             .filter((p) => !playersInRound.includes(p.name))
-            .map((player) => (
-              <Player
-                imageSrc={player.picture}
-                key={player.name}
-                onClick={() =>
-                  setPlayersInRound([player.name, ...playersInRound])
-                }
-              >
-                {!player.picture && (
-                  <>
-                    <FootballPlayerIcon /> {player.name}
-                  </>
-                )}
-              </Player>
-            ))}
+            .map((player) => {
+              const imgSrc = `${process.env.PUBLIC_URL}/images/${player.name}.png`;
+              return (
+                <Player
+                  key={player.name}
+                  onClick={() =>
+                    setPlayersInRound([player.name, ...playersInRound])
+                  }
+                >
+                  <PlayerImage imageSrc={imgSrc} />
+                  <PlayerName> {player.name}</PlayerName>
+                </Player>
+              );
+            })}
           <AddIconContainer
             onClick={() => {
               if (!addNewPlayer) {
@@ -177,39 +178,13 @@ const InputPlayerName = styled.input`
   outline: none;
 `;
 
-const Player = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 70px;
-  height: 70px;
-  margin: 5px;
-  padding: 5px;
-  background-color: ${(p) => p.theme.colors.white};
-  background-image: ${(p) => p.imageSrc && `url(${p.imageSrc})`};
-  background-size: cover;
-  overflow: hidden;
-  color: ${(p) => p.theme.colors.purple};
-  word-break: break-all;
-
-  path {
-    fill: ${(p) => p.theme.colors.purple};
-  }
-
-  :hover {
-    cursor: pointer;
-    opacity: ${(p) => p.theme.hover.opacity};
-  }
-`;
-
 const AddIconContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 70px;
-  height: 70px;
+  width: 120px;
+  height: 90px;
   margin: 5px;
   padding: 5px;
   background-color: ${(p) => p.theme.colors.white};

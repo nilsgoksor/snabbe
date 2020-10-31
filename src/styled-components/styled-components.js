@@ -82,3 +82,39 @@ export const Button = styled.button`
     cursor: pointer;
   }
 `;
+
+export const Player = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+  margin: 5px;
+  padding: 5px;
+
+  path {
+    fill: ${(p) => p.theme.colors.purple};
+  }
+
+  :hover {
+    cursor: pointer;
+    opacity: ${(p) => p.theme.hover.opacity};
+  }
+`;
+
+export const PlayerImage = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: ${(p) => p.theme.colors.white};
+  background-image: ${(p) => p.imageSrc && `url(${p.imageSrc})`};
+  background-size: cover;
+  overflow: hidden;
+`;
+
+export const PlayerName = styled.div`
+  color: white;
+  word-break: break-all;
+  width: 100%;
+  height: 30px;
+`;

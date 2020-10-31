@@ -43,15 +43,15 @@ const LeaderBoardPage = () => {
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
-        const fetchedRounds = data.map((roundData) => {
+        const rounds = data.map((roundData) => {
           return roundData.round;
         });
-        setFetchedRounds(fetchedRounds);
+        setFetchedRounds(rounds);
       });
   }, []);
 
   useEffect(() => {
-    let leaderboard: {
+    const table: {
       name: string;
       totalPoints: number;
       roundsPlayed: number;
@@ -59,15 +59,15 @@ const LeaderBoardPage = () => {
     if (players && fetchedRounds) {
       fetchedRounds.forEach((round) => {
         round.forEach((player) => {
-          const playerExistIndex = leaderboard.findIndex(
+          const playerExistIndex = table.findIndex(
             (p) => p.name === player.name
           );
           let playerToAdd;
           if (playerExistIndex !== -1) {
-            playerToAdd = leaderboard[playerExistIndex];
+            playerToAdd = table[playerExistIndex];
             playerToAdd.totalPoints += player.points;
             playerToAdd.roundsPlayed += 1;
-            leaderboard.splice(playerExistIndex, 1);
+            table.splice(playerExistIndex, 1);
           } else {
             playerToAdd = {
               name: player.name,
@@ -76,18 +76,18 @@ const LeaderBoardPage = () => {
             };
           }
 
-          const insertIndex = leaderboard.findIndex(
+          const insertIndex = table.findIndex(
             (p) => p.totalPoints < playerToAdd.totalPoints
           );
           if (insertIndex !== -1) {
-            leaderboard.splice(insertIndex, 0, playerToAdd);
+            table.splice(insertIndex, 0, playerToAdd);
           } else {
-            leaderboard.push(playerToAdd);
+            table.push(playerToAdd);
           }
         });
       });
     }
-    setLeaderboard(leaderboard);
+    setLeaderboard(table);
   }, [fetchedRounds, players]);
 
   return (
