@@ -6,7 +6,6 @@ import LeaderBoardPage from "./pages/LeaderBoardPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import PlayerProfilesPage from "./pages/PlayerProfilesPage";
 import Header from "./components/Header";
-import { StateProvider } from "./state/context";
 import { ThemeProvider } from "styled-components";
 import theme from "./styled-components/theme";
 import HistoryPage from "./pages/HistoryPage";
@@ -15,24 +14,22 @@ function App() {
   const history = createBrowserHistory();
 
   return (
-    <StateProvider>
-      <ThemeProvider theme={theme}>
-        <Header
-          history={history}
-          pages={["round", "table", "history", "profiles"]}
-        />
-        <Router history={history}>
-          <Switch>
-            <Route path="/" exact component={RegisterRoundPage} />
-            <Route path="/round" exact component={RegisterRoundPage} />
-            <Route path="/table" exact component={LeaderBoardPage} />
-            <Route path="/history" exact component={HistoryPage} />
-            <Route path="/profiles" exact component={PlayerProfilesPage} />
-            <Route path="*" component={NotFoundPage} />
-          </Switch>
-        </Router>
-      </ThemeProvider>
-    </StateProvider>
+    <ThemeProvider theme={theme}>
+      <Header
+        history={history}
+        pages={["round", "table", "history", "profiles"]}
+      />
+      <Router history={history}>
+        <Switch>
+          <Route path="/" exact component={RegisterRoundPage} />
+          <Route path="/round" exact component={RegisterRoundPage} />
+          <Route path="/table" exact component={LeaderBoardPage} />
+          <Route path="/history" exact component={HistoryPage} />
+          <Route path="/profiles" exact component={PlayerProfilesPage} />
+          <Route path="*" component={NotFoundPage} />
+        </Switch>
+      </Router>
+    </ThemeProvider>
   );
 }
 
