@@ -2,11 +2,19 @@ import React from "react";
 import styled from "styled-components/macro";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import { Heading1 } from "../styled-components/styled-components";
 
 const Wrapper = styled.div`
-  height: 100vh;
+  height: 90vh;
   width: 100vw;
-  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const ImageContainer = styled.div`
+  height: 60vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -14,7 +22,7 @@ const Wrapper = styled.div`
 `;
 
 const Image = styled.img`
-  max-height: 80vh;
+  max-height: 100%;
   max-width: 100%;
 `;
 
@@ -23,6 +31,10 @@ const Navigation = styled.nav`
   max-width: 960px;
   display: flex;
   justify-content: center;
+
+  @media (max-height: 670px) {
+    bottom: 1rem;
+  }
 `;
 
 const NavigationButton = styled.button`
@@ -48,7 +60,10 @@ const PhotoAlbum = () => {
 
   return (
     <Wrapper>
-      <Image src={`/images/snabbe_2020-11-15/${index}.jpeg`} alt="" />
+      <Heading1>Photos</Heading1>
+      <ImageContainer>
+        <Image src={`/images/snabbe_2020-11-15/${index}.jpeg`} alt="" />
+      </ImageContainer>
       <Navigation>
         <NavigationButton
           onClick={() => {
