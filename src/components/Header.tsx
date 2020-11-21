@@ -42,6 +42,7 @@ export default Heading;
 
 const Nav = styled.nav`
   background-color: ${(p) => p.open && "transparent"};
+  top: 1rem;
   right: 0px;
   z-index: 200;
   position: absolute;

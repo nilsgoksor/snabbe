@@ -4,7 +4,7 @@ import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 const Wrapper = styled.div`
-  height: 95vh;
+  height: 100vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -14,6 +14,7 @@ const Wrapper = styled.div`
 
 const Image = styled.img`
   max-height: 80vh;
+  max-width: 100%;
 `;
 
 const Navigation = styled.nav`

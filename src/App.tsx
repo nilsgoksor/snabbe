@@ -18,7 +18,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Header
         history={history}
-        pages={["round", "table", "history", "profiles"]}
+        pages={["round", "table", "history", "profiles", "photos"]}
       />
       <Router history={history}>
         <Switch>
