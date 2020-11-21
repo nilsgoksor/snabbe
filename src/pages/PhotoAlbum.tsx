@@ -31,10 +31,6 @@ const Navigation = styled.nav`
   max-width: 960px;
   display: flex;
   justify-content: center;
-
-  @media (max-height: 670px) {
-    bottom: 1rem;
-  }
 `;
 
 const NavigationButton = styled.button`
