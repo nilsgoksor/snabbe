@@ -6,6 +6,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 const Wrapper = styled.div`
   height: 100vh;
   width: 100vw;
+  padding-top: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
