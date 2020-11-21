@@ -9,6 +9,7 @@ import Header from "./components/Header";
 import { ThemeProvider } from "styled-components";
 import theme from "./styled-components/theme";
 import HistoryPage from "./pages/HistoryPage";
+import PhotoAlbum from "./pages/PhotoAlbum";
 
 function App() {
   const history = createBrowserHistory();
@@ -17,7 +18,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Header
         history={history}
-        pages={["round", "table", "history", "profiles"]}
+        pages={["round", "table", "history", "profiles", "photos"]}
       />
       <Router history={history}>
         <Switch>
@@ -26,6 +27,7 @@ function App() {
           <Route path="/table" exact component={LeaderBoardPage} />
           <Route path="/history" exact component={HistoryPage} />
           <Route path="/profiles" exact component={PlayerProfilesPage} />
+          <Route path="/photos" exact component={PhotoAlbum} />
           <Route path="*" component={NotFoundPage} />
         </Switch>
       </Router>
