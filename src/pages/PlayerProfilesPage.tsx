@@ -82,7 +82,9 @@ const PlayerProfilesPage = () => {
       <Heading1>Player profiles</Heading1>
       <PlayersContainer>
         {fetchedPlayers.map((player) => {
-          const imgSrc = `${process.env.PUBLIC_URL}/images/${player.name}.png`;
+          const imgSrc = `${
+            process.env.PUBLIC_URL
+          }/images/${player.name.toLowerCase()}.png`;
           return (
             <Player
               key={player.name}
