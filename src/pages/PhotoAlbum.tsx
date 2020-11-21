@@ -5,7 +5,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { Heading1 } from "../styled-components/styled-components";
 
 const Wrapper = styled.div`
-  height: 90vh;
+  height: 80vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -66,7 +66,8 @@ const PhotoAlbum = () => {
       </ImageContainer>
       <Navigation>
         <NavigationButton
-          onClick={() => {
+          onClick={(event) => {
+            event.preventDefault(); // Stop mobile browser from zooming in when double clicking
             setIndex((state) => {
               if (state === 0) {
                 return lastPhotoIndex;
@@ -78,7 +79,8 @@ const PhotoAlbum = () => {
           <ArrowBackIcon></ArrowBackIcon>
         </NavigationButton>
         <NavigationButton
-          onClick={() => {
+          onClick={(event) => {
+            event.preventDefault(); // Stop mobile browser from zooming in when double clicking
             setIndex((state) => {
               return (state + 1) % lastPhotoIndex;
             });
